@@ -101,14 +101,13 @@ class TicketController extends Controller
         //Espacio para Manejar el Residuo y la Asignacion de Oportunidades
             // 1. Obtener la Ruleta y verificar su existencia/actividad
                 $ruleta = Ruleta::where('id_sorteo', $sorteo->id_sorteo)->first();
-
+                
                 if ($ruleta && $ruleta->activo) {
                     
                     // 2. BUSCAR DIRECTAMENTE el registro ClienteRuleta (Uso eficiente de la DB)
                     $clienteRuletaFound = ClienteRuleta::where('id_ruleta', $ruleta->id_ruleta)
                                                     ->where('cedula', $cliente->cedula)
                                                     ->first();
-
                     // 3. Si el registro existe, actualizar las oportunidades y residuo
                     if ($clienteRuletaFound) {
                         
@@ -121,10 +120,10 @@ class TicketController extends Controller
                         
                         // Calcular nuevo residuo (Operador Módulo)
                         $nuevoResiduo = $totalTickets % $condicional; 
-
                         // Actualizar el modelo y guardar
-                        $clienteRuletaFound->oportunidades += $nuevasOportunidades;
+                        $clienteRuletaFound->oportunidades += ($nuevasOportunidades* $ruleta->cantidad_de_opotunidades_por_dar);
                         $clienteRuletaFound->residuo = $nuevoResiduo;
+                        
                         $clienteRuletaFound->save();
                     }
                 }
