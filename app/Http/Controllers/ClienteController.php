@@ -43,7 +43,7 @@ class ClienteController extends Controller
                 if ($ruleta && $ruleta->activo) {
                     // 2. Optimizar: Intentar encontrar directamente el ClienteRuleta.
                     // Usamos el id de la ruleta encontrado ($ruleta->id) y la cédula del request.
-                    $clienteRuletaExistente = ClienteRuleta::where('id_ruleta', $ruleta->id) // Asumiendo que el ID de la tabla Ruleta es 'id'
+                    $clienteRuletaExistente = ClienteRuleta::where('id_ruleta', $ruleta->id_ruleta) // Asumiendo que el ID de la tabla Ruleta es 'id'
                                                         ->where('cedula', $request->cedula)
                                                         ->first();
 
