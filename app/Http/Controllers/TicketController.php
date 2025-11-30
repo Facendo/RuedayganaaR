@@ -19,7 +19,7 @@ class TicketController extends Controller
     
     public function index(int $id_pago)
     {   $pago = Pago::find($id_pago);
-        $cliente = Cliente::find($pago->cedula_cliente);
+        $cliente = Cliente::where('cedula', $pago->cedula_cliente)->first();
         $tickets = Ticket::all();
         $sorteo= Sorteo::find($pago->id_sorteo);
         return view('admin.tickets', compact('sorteo', 'tickets','cliente', 'pago'));
@@ -64,7 +64,12 @@ class TicketController extends Controller
         $sorteo = Sorteo::find($request->id_sorteo);
         $admin = User::all();
         $pago = Pago::find($request->id_pago);
-        $cliente = Cliente::find($pago->cedula_cliente);
+        $clientes= Cliente::where('cedula', $pago->cedula_cliente)->get();
+        foreach($clientes as $client){
+            if($client->id_sorteo == $request->id_sorteo){
+                $cliente = $client;
+            }
+        }
         $cliente->cantidad_comprados+= $pago->cantidad_de_tickets;
         $cliente->save();
         
@@ -125,6 +130,7 @@ class TicketController extends Controller
                 }
         //Crear Ticket
         $ticket = new Ticket();
+        $ticket->id_cliente = $cliente->id;
         $ticket->cedula_cliente = $request->cedula_cliente;
         $ticket->id_sorteo = $request->id_sorteo;
         $ticket->nombre_sorteo = $sorteo->sorteo_nombre;

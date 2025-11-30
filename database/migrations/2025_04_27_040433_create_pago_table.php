@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pago', function (Blueprint $table) {
             $table->integer('id_pago')->autoIncrement()->primary();
             $table->integer('id_sorteo');
+            $table->integer('id_cliente');
             $table->string('cedula_cliente');
             $table->string('referencia')->unique();
             $table->double('monto');
@@ -25,8 +26,8 @@ return new class extends Migration
             $table->string('estado_pago')->default('pendiente');
             $table->string("imagen_comprobante");
         
-           $table->foreign('cedula_cliente')
-                ->references('cedula')
+           $table->foreign('id_cliente')
+                ->references('id')
                 ->on('cliente')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
