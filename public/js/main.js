@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
         '.form_rulet input[name="id_sorteo"]'
     );
 
+    const ticketButton = document.getElementById("ver_ticket");
+    const cedulaTicks = document.getElementById("cedula_tickets");
+
     // Evento: Cerrar modal
     closeButton.addEventListener("click", closeModal);
     window.addEventListener("click", (event) => {
@@ -125,6 +128,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.log(`Error: ${errorMessage}`);
 
                     spinBtn.disabled = false;
+                });
+        };
+    }
+
+    if (ticketButton) {
+        ticketButton.onclick = function (event) {
+            event.preventDefault();
+
+            const cedula = cedulaTicks.value.trim();
+            if (cedula === "") {
+                alert("Ingrese su cédula para buscar sus tickets.");
+                return;
+            }
+            fetchTickets(cedula)
+                .then((data) => {
+                    console.log("Tickets obtenidos:", data);
+                    mostrarTicketsEnModal(data);
+                })
+                .catch((error) => {
+                    console.error("Error al buscar tickets:", error);
+                    alert("Hubo un error al buscar sus tickets.");
                 });
         };
     }
