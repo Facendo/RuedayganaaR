@@ -23,8 +23,16 @@ class ClienteController extends Controller
     
     public function store(Request $request)
     {   
-        if(Cliente::where('cedula', $request->cedula)->exists()){
-            $clienteregistrado = Cliente::where('cedula', $request->cedula)->first();
+        $clientes = Cliente::all();
+        $isRegistred = false;
+        //Validar si el cliente ya esta registrado
+        foreach($clientes as $cliente){
+            if($cliente->cedula == $request->cedula && $cliente->id_sorteo == $request->id_sorteo){
+                $isRegistred = true;
+            }
+        }
+        if($isRegistred){
+            $clienteregistrado = Cliente::where('cedula', $request->cedula)->where('id_sorteo', $request->id_sorteo)->first();
             $clienteregistrado->fecha_de_pago = $request->fecha_de_pago;
             $clienteregistrado->save();
             $clienteregistrado->id_sorteo = $request->id_sorteo;
@@ -69,6 +77,7 @@ class ClienteController extends Controller
             $cliente->cantidad_comprados = 0;
             $cliente->fecha_de_pago = $request->fecha_de_pago; 
             $cliente->id_sorteo = $request->id_sorteo;
+            
             $cliente->save();
             
             //Crear clienteRuleta si la ruleta esta creada para este sorteo
@@ -95,6 +104,14 @@ class ClienteController extends Controller
         }
         
         else{
+            $cliente = Cliente::where('cedula', $request->cedula)->get();
+            
+            foreach($cliente as $client){
+                if($client->id_sorteo == $request->id_sorteo){
+                    $cliente = $client;
+                }
+            }
+            $pago->id_cliente= $cliente->id;
             $pago->cedula_cliente = $request->cedula;
             $pago->referencia = $request->referencia;
             $pago->id_sorteo = $request->id_sorteo;

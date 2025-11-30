@@ -9,9 +9,9 @@ class Cliente extends Model
 {
     use HasFactory;
     protected $table = 'cliente';
-    protected $primaryKey = 'cedula';
-    public $incrementing = false;
-    public $keytype= 'string';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    public $keytype= 'integer';
     public $timestamps = false; 
 
 }

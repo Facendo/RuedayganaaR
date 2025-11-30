@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cliente', function (Blueprint $table) {
-            $table->string('cedula')->primary();
+            $table->integer("id")->autoIncrement()->primary();
+            $table->string('cedula');
             $table->integer('id_sorteo');
             $table->string('nombre_y_apellido');
             $table->string('telefono');
