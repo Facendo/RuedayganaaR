@@ -41,6 +41,7 @@ class RuletaController extends Controller
     {
         
         $ruleta = new Ruleta();
+        
         $ruleta->id_sorteo = $request->input('id_sorteo');
         $ruleta->nombre = $request->input('nombre');
         $ruleta->cantidad_de_opotunidades_por_dar = $request->input('cantidad_de_opotunidades_por_dar');
@@ -50,7 +51,7 @@ class RuletaController extends Controller
             $path = $image->storeAs('ruleta', $filename, 'public');
             $ruleta->dir_imagen = 'ruleta/' . $filename;
         }
-        $ruleta->Condicional_Oportunidades = $request->input('Condicional_Oportunidades', 0);
+        $ruleta->Condicional_Oportunidades = $request->input('Condicional_Oportunidades');
         $ruleta->save();
         return redirect()->route('pago.index');
     }

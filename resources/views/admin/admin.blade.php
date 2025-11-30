@@ -350,9 +350,7 @@
         </table>
     </div>
 </div>
-                <div class="pagination_container">
-            {{ $historicos->links() }}
-        </div>
+               
             </tbody>
             
         </table>

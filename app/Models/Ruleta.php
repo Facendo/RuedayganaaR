@@ -14,7 +14,7 @@ class Ruleta extends Model
     protected $fillable = [
         'id_ruleta',
         'id_sorteo',
-        'condicional_oportunidades',
+        'condicional_opotunidades',
         'created_at',
         'updated_at',
     ];

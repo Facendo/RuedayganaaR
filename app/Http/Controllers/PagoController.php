@@ -21,7 +21,7 @@ class PagoController extends Controller
         $premios= Premio::all();
         $pagos = Pago::orderBy('id_pago', 'desc')->paginate(3);
         $sorteos = Sorteo::all();
-        $historicos = HistoricoRuleta::orderBy('id', 'desc')->paginate(3);
+        $historicos = HistoricoRuleta::all()->sortByDesc('id');
         return view('admin.admin',compact('pagos','premios','sorteos','Ruletas','historicos'));
     }
 
