@@ -255,12 +255,14 @@ class TicketController extends Controller
         }
     }
 
-    public function BusquedaTicket(Request $request) {
+public function BusquedaTicket(Request $request) {
     
     $cedula = $request->input('busqueda_tickets');
+
     $cliente = Cliente::select('nombre_y_apellido')
                       ->where('cedula', $cedula)
                       ->first();
+
 
     if (!$cliente) {
         return response()->json([
@@ -274,7 +276,7 @@ class TicketController extends Controller
                      ->select('numeros_seleccionados')
                      ->get();
 
-    
+
     $todosLosNumeros = [];
 
     foreach ($tickets as $ticket) {

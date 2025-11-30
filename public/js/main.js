@@ -1,7 +1,17 @@
 // main.js
 
-import { checkCedula, spinRuleta, sendSecondData } from "./api.js";
-import { openModal, closeModal, animateRuleta } from "./ui.js";
+import {
+    checkCedula,
+    spinRuleta,
+    sendSecondData,
+    fetchTickets,
+} from "./api.js";
+import {
+    openModal,
+    closeModal,
+    animateRuleta,
+    mostrarTicketsEnModal,
+} from "./ui.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // Referencias a elementos comunes
@@ -16,8 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
         '.form_rulet input[name="id_sorteo"]'
     );
 
-    const ticketButton = document.getElementById("ver_ticket");
-    const cedulaTicks = document.getElementById("cedula_tickets");
+    const searchTicketsBtn = document.getElementById("ver_tickets");
+    const cedulaTicketInput = document.getElementById("cedula_tickets");
 
     // Evento: Cerrar modal
     closeButton.addEventListener("click", closeModal);
@@ -132,23 +142,26 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    if (ticketButton) {
-        ticketButton.onclick = function (event) {
+    if (searchTicketsBtn) {
+        searchTicketsBtn.onclick = function (event) {
             event.preventDefault();
+            const cedula = cedulaTicketInput.value.trim();
 
-            const cedula = cedulaTicks.value.trim();
             if (cedula === "") {
-                alert("Ingrese su cédula para buscar sus tickets.");
+                alert("Ingrese su cédula para buscar tickets.");
                 return;
             }
+
             fetchTickets(cedula)
                 .then((data) => {
-                    console.log("Tickets obtenidos:", data);
+                    console.log("Tickets encontrados:", data);
                     mostrarTicketsEnModal(data);
                 })
                 .catch((error) => {
                     console.error("Error al buscar tickets:", error);
-                    alert("Hubo un error al buscar sus tickets.");
+                    alert(
+                        "Hubo un error al buscar los tickets o no se encontraron. Revise la consola para más detalles."
+                    );
                 });
         };
     }

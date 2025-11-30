@@ -28,7 +28,6 @@ class SorteoController extends Controller
                                     ->get();
             $topPorSorteo[$sorteo->id_sorteo] = $clientesSorteo;
         }
-        dd($topPorSorteo);
         return view('index', compact('sorteos','clientes', 'tickets', 'ruletas', 'topPorSorteo'));
     }
 

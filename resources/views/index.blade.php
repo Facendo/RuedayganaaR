@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <h2 class="section_subtitle">Verifique sus tickets</h2>
             <div class="container_reg">
                 <div class="cont_form">
-                    <form action="{{route('ticket.busqueda')}}" class="form content_form" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('ticket.buscarTicketsCliente')}}" class="form content_form" method="POST" >
                         <div class="header">
                             <h1>Verifique sus tickets por cedula</h1>
                         </div>
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
         check: "{{ route('ruleta.searchclient') }}",
         spin: "{{ route('ruleta.spin') }}",
         mail: "{{route('ruleta.sendmail')}}",
-        tick: "{{route('ticket.busqueda')}}",
+        tick: "{{route('ticket.buscarTicketsCliente')}}",
         token: "{{ csrf_token() }}" // También inyectamos el token
     };
 </script>

@@ -258,6 +258,10 @@ export function mostrarTicketsEnModal(data) {
         });
         modal.dataset.listener = "true";
     }
+
+    // 5. No se requiere lógica de "vaciar tickets" aquí a menos que tengas un array global
+    // que deba ser limpiado después de esta operación.
+    // Si necesitas vaciar el array, debes pasarlo como argumento separado y ejecutar: arrayGlobal.length = 0;
 }
 
 // export function generateRuleta(ranuraData) {
