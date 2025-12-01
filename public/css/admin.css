@@ -168,3 +168,15 @@ tr:nth-child(odd) td {
 .x_modal:hover {
     background-color: #f33;
 }
+
+.scroll_historic {
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.table_gestion thead th {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+}

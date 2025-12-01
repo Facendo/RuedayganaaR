@@ -55,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             checkCedula(cedula, idSorteo)
                 .then((data) => {
-                    console.log("Verificación exitosa:", data);
                     openModal(data);
                 })
                 .catch((error) => {
@@ -90,28 +89,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         typeof contentToSend === "object" &&
                         Object.keys(contentToSend).length > 0
                     ) {
-                        console.log(
-                            "¡Premio detectado! Enviando datos de contacto (sendSecondData)..."
-                        );
-                        // No esperamos el resultado de sendSecondData para no frenar la animación.
-                        // Solo logueamos el resultado.
                         sendSecondData(contentToSend)
-                            .then((response) =>
-                                console.log(
-                                    "Envío de correos exitoso:",
-                                    response
-                                )
-                            )
+                            .then((response) => {})
                             .catch((mailError) =>
                                 console.error(
                                     "Error FATAL en el envío de correos:",
                                     mailError
                                 )
                             );
-                    } else {
-                        console.log(
-                            "No hay premios (bancarrota/reintento), no se hace la segunda petición."
-                        );
                     }
 
                     return animateRuleta(data);
@@ -154,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fetchTickets(cedula)
                 .then((data) => {
-                    console.log("Tickets encontrados:", data);
                     mostrarTicketsEnModal(data);
                 })
                 .catch((error) => {

@@ -15,22 +15,32 @@ class SorteoController extends Controller
 {
     
     public function index()
-    {
-        $ruletas= Ruleta::all();
-        $tickets = Ticket::all();
-        $clientes = Cliente::orderBy('cantidad_comprados', 'desc')->take(5)->get();
-        $sorteos = Sorteo::all();
-        $topPorSorteo = [];
-        foreach($sorteos as $sorteo){
-            $clientesSorteo = Cliente::where('id_sorteo', $sorteo->id_sorteo)
-                                    ->orderBy('cantidad_comprados', 'desc')
-                                    ->take(5)
-                                    ->get();
-            $topPorSorteo[$sorteo->id_sorteo] = $clientesSorteo;
-        }
-
-        return view('index', compact('sorteos','clientes', 'tickets', 'ruletas', 'topPorSorteo'));
+{
+    // ... Tu código inicial de recuperación de datos ...
+    $ruletas = Ruleta::all();
+    $tickets = Ticket::all();
+    $clientes = Cliente::orderBy('cantidad_comprados', 'desc')->take(5)->get();
+    $sorteos = Sorteo::all();
+    
+    // --- Lógica para el Top por Sorteo Modificada ---
+    $topPorSorteo = [];
+    
+    foreach($sorteos as $sorteo){
+        // 1. Obtener los 5 mejores clientes para el sorteo actual
+        $clientesSorteo = Cliente::where('id_sorteo', $sorteo->id_sorteo)
+                                 ->orderBy('cantidad_comprados', 'desc')
+                                 ->take(5)
+                                 ->get();
+        
+        // 2. Almacenar la data en el array incluyendo el nombre del sorteo
+        $topPorSorteo[$sorteo->id_sorteo] = [
+            'nombre' => $sorteo->sorteo_nombre, // <-- Nuevo campo con el nombre
+            'top_clientes' => $clientesSorteo
+        ];
     }
+
+    return view('index', compact('sorteos','clientes', 'tickets', 'ruletas', 'topPorSorteo'));
+}
 
     
 

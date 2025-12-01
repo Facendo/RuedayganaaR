@@ -321,10 +321,11 @@
     </div>
 </div>
 
-<div id="section_ventas_admin" class="container">
+<div class="scroll_historic">
+    <div id="section_ventas_admin" class="container">
     <h2 class="section_subtitle">HISTORICOS DE LAS RULETAS</h2>
-    <div class="container_table">
-        <table id="table_gestion" class="table_gestion">
+    <div class="container_table ">
+        <table id="table_gestion_historic"  class="table_gestion ">
             <thead>
                 <tr>
                     <th>Nombre Ruleta</th>
@@ -349,6 +350,7 @@
             </tbody>
         </table>
     </div>
+</div>
 </div>
                
             </tbody>
