@@ -106,7 +106,6 @@ export function animateRuleta(data) {
         return Promise.resolve(null);
     }
 
-    console.log("datos de animacion", data);
     const cantRanuras = ruletaState.ranuras.length;
     const precision = 360 / cantRanuras;
 

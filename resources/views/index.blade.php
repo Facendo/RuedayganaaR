@@ -207,42 +207,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <section id="top_ventas">
 
-
     <h2 class="section_subtitle">TOP DE VENTAS</h2>
-    <div class="container_table">
-        <table class="table_top"> 
-            <thead class="table_top_header">
-                <tr class="tr_top">
-                    <th class="th_top">Puesto</th>
-                    <th class="th_top">Nombre</th>
-                    <th class="th_top">Cantidad de boletos</th>
-                </tr>
-            </thead>
-            <tbody>
-            @empty(!$clientes)
-                @foreach($clientes as $key => $cliente) {{-- Agregamos $key para obtener el índice --}}
-                    @if($cliente->cantidad_comprados === 0)
-                        @continue {{-- Si la cantidad de boletos es 0, saltamos a la siguiente iteración --}}
-                    @endif
-                    <tr class="tr_top">
-                        <td class="td_top">
-                            @if($key === 0) {{-- Verifica si es el primer elemento (índice 0) --}}
-                                <img src="{{asset('img/trofeo.png')}}" alt="imagen trofeo" class="img_trofeo">
-                            @endif
-                        </td>
-                        <td class="td_top">{{ $cliente->nombre_y_apellido }}</td>
-                        <td class="td_top">{{ $cliente->cantidad_comprados }}</td>
-                    </tr>
-                @endforeach
-            @else
-                <tr class="tr_top">
-                    <td class="td_top" colspan="3">No hay clientes registrados.</td>
-                </tr>
-            @endempty
-        </tbody>
-        </table>
 
-    </div>
+    {{-- Itera sobre la colección de sorteos, donde $sorteoTop es el array con 'nombre' y 'top_clientes' --}}
+    @foreach($topPorSorteo as $sorteoTop) 
+        
+        {{-- 1. Muestra el nombre del sorteo (usando la clave 'nombre') --}}
+        <h3 class="subtitle_top">Sorteo: {{ $sorteoTop['nombre'] }}</h3>
+        
+        <div class="container_table">
+
+            <table class="table_top"> 
+                <thead class="table_top_header">
+                    <tr class="tr_top">
+                        <th class="th_top">Puesto</th>
+                        <th class="th_top">Nombre</th>
+                        <th class="th_top">Cantidad de boletos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                {{-- Verifica si hay clientes en el TOP para este sorteo específico --}}
+                @empty(!$sorteoTop['top_clientes']) 
+                    
+                    {{-- 2. Itera sobre los clientes de ESTE sorteo específico --}}
+                    {{-- Usamos $loop->index para obtener el puesto (0, 1, 2, ...) --}}
+                    @foreach($sorteoTop['top_clientes'] as $cliente) 
+                        
+                        {{-- 3. Ya que la consulta en Laravel solo trae clientes con cantidad_comprados > 0, 
+                             esta verificación es opcional, pero la dejamos para seguridad. --}}
+                        @if($cliente->cantidad_comprados == 0)
+                            @continue
+                        @endif
+                        
+                        <tr class="tr_top">
+                            <td class="td_top">
+                                {{-- 4. Calcula el puesto: 1, 2, 3, etc. --}}
+                           
+                                
+                                {{-- Agrega el trofeo al primer puesto (índice 0) --}}
+                                @if($loop->index === 0) 
+                                    <img src="{{ asset('img/trofeo.png') }}" alt="imagen trofeo" class="img_trofeo">
+                                @endif
+                            </td>
+                            <td class="td_top">{{ $cliente->nombre_y_apellido }}</td>
+                            <td class="td_top">{{ $cliente->cantidad_comprados }}</td>
+                        </tr>
+                    @endforeach
+                
+                @else
+                    <tr class="tr_top">
+                        <td class="td_top" colspan="3">No hay clientes con ventas para este sorteo.</td>
+                    </tr>
+                @endempty
+                
+                </tbody>
+            </table>
+        </div>
+
+    @endforeach
 
 </section>
 
@@ -322,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <h2 class="section_subtitle">Verifique sus tickets</h2>
             <div class="container_reg">
                 <div class="cont_form">
-                    <form action="{{route('ticket.busqueda')}}" class="form content_form" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('ticket.buscarTicketsCliente')}}" class="form content_form" method="POST" >
                         <div class="header">
                             <h1>Verifique sus tickets por cedula</h1>
                         </div>
@@ -364,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <br>
 
-    <div class="mensaje_result"><h2 id="result_rulet">rueda papi rueda</h2></div>
+    <div class="mensaje_result"><h2 id="result_rulet">Prueba tu suerte 🥳</h2></div>
 
     <br>
 
@@ -398,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
         check: "{{ route('ruleta.searchclient') }}",
         spin: "{{ route('ruleta.spin') }}",
         mail: "{{route('ruleta.sendmail')}}",
-        tick: "{{route('ticket.busqueda')}}",
+        tick: "{{route('ticket.buscarTicketsCliente')}}",
         token: "{{ csrf_token() }}" // También inyectamos el token
     };
 </script>
